@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WebApiDemo.Data;
+using WebApiDemo.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AplicationDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 
