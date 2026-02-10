@@ -1,32 +1,17 @@
 {
-
-&nbsp; "Logging": {
-
-&nbsp;   "LogLevel": {
-
-&nbsp;     "Default": "Information",
-
-&nbsp;     "Microsoft.AspNetCore": "Warning"
-
-&nbsp;   }
-
-&nbsp; },
-
-&nbsp; "AllowedHosts": "\*",
-
-&nbsp; "ConnectionStrings": {
-
-&nbsp;   "DefaultConnection": "Server=localHost;Database=Practica;User=;Password=;TrustServerCertificate=True;MultipleActiveResultSets=True;"
-
-&nbsp; }
-
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localHost;Database=Practica;User=;Password=;TrustServerCertificate=True;MultipleActiveResultSets=True;"
+  }
 }
-
-------------------------------------------------------------------------------------------------------------------------------------------
-
-NuGets:
-
-
+-----------------------------------------------------------------------------------------------------------------------------------------
+NuGets
 
 Microsoft.AspNetCore.OpenApi
 
@@ -41,7 +26,7 @@ Swashbuckle.AspNetCore.SwaggerGen
 Swashbuckle.AspNetCore.SwaggerUI
 
 TENES QUE INICIAR EL PROGRAMA, COPIAR EL PRIMER ENLACE DE LA CONSOLA Y EN EL BUSCADOR AGREGARLE /swagger/index.html
-TIENE QUE QUEDAR ALGO PARECIDO A ESTO "https://localhost:7164/swagger/index.html"
+TIENE QUE QUEDAR ALGO PARECIDO A ESTO "https://localhost:7168/swagger/index.html"
 
 
 

@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using WebApiDemo.Data;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebApiDemo.Entity;
+using WebApiDemo.Service;
 
 namespace WebApiDemo.Controllers
 {
@@ -9,23 +8,26 @@ namespace WebApiDemo.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly AplicationDbContext _context;
+        private readonly IProductService _service;
 
-        public ProductsController(AplicationDbContext context)
+        
+        public ProductsController(IProductService service)
         {
-            _context = context;
+            _service = service;
         }
 
         [HttpGet]
-        public  IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            return Ok(_context.Products.ToList());
+            var products = await _service.GetAll();
+            return Ok(products);
         }
+
         [HttpGet("{id}")]
-        public async Task<IActionResult>Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var product = await _context.Products.FindAsync(id);
-            if (product==null)
+            var product = await _service.GetById(id);
+            if (product == null)
             {
                 return NotFound();
             }
@@ -35,37 +37,32 @@ namespace WebApiDemo.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(Product product)
         {
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
-            return Ok();    
+            await _service.Create(product);
+            return Ok(); 
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id,Product products)
+        public async Task<IActionResult> Put(int id, Product product)
         {
-            var obj=await _context.Products.FindAsync(id);
-            if (obj == null)
+            var result = await _service.Update(id, product);
+
+            if (!result)
             {
                 return NotFound();
             }
-
-            obj.Name = products.Name;
-            obj.Description = products.Description;
-            obj.Price = products.Price;
-            await _context.SaveChangesAsync();
             return Ok();
         }
 
-        [HttpDelete("{Id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var product = await _context.Products.FindAsync(id);
-            if (product==null)
+            var result = await _service.Delete(id);
+
+            if (!result)
             {
                 return NotFound();
             }
-            await _context.SaveChangesAsync();
-            return Ok(product);
+            return Ok();
         }
     }
 }
