@@ -4,3 +4,4 @@ appsettings.Development.json
 in/
 obj/
 bin/
+.vs
