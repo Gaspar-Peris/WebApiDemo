@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Models/Models.csproj" Id="ae8667b6-f300-420c-ad4d-81f5136a526e" />
+  <Project Path="Services/Services.csproj" Id="e4b6b615-c675-4d92-ad58-466a331d59e9" />
+  <Project Path="WebApiDemo/WebApiDemo.csproj" />
+  <Project Path="WinFormsApp1/WinFormsApp1.csproj" Id="e04fc592-dba2-4719-b05c-c2b71054b957" />
+</Solution>

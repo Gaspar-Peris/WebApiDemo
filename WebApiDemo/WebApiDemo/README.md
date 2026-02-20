@@ -46,6 +46,7 @@ Sigue estos pasos para poner en marcha el proyecto:
     ```
 
 La API estará disponible en `https://localhost:5001` (o el puerto configurado en `launchSettings.json`).
+Luego de iniciar WebApiDemo debera cambiar de proyecto y iniciar WinFormsApp1
 
 ---
 

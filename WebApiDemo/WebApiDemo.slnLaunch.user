@@ -1,0 +1,23 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "WebApiDemo\\WebApiDemo.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Models\\Models.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Services\\Services.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "WinFormsApp1\\WinFormsApp1.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
