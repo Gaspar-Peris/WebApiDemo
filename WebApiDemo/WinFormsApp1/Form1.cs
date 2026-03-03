@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using Shared;
 using System.Security.Policy;
 
 namespace WinFormsApp1
@@ -33,15 +34,7 @@ namespace WinFormsApp1
 
                 var response = await client.GetStringAsync(url);
 
-                var listaOriginal = JsonConvert.DeserializeObject<List<dynamic>>(response);
-
-                var lista = listaOriginal?.Select(p => new
-                {
-                    Id = (int)p.id,
-                    Name = (string)p.name,
-                    Description = (string)p.description,
-                    Price = (decimal)p.price
-                }).ToList();
+                var lista = JsonConvert.DeserializeObject<List<ProductResponseDto>>(response);
 
                 dataGridView1.DataSource = lista;
             }

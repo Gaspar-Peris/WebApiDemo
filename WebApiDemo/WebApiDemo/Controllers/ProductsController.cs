@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services.Service;
-
+using Shared;
 
 namespace WebApiDemo.Controllers
 {
@@ -9,30 +10,33 @@ namespace WebApiDemo.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly IProductService _service;
 
-        
-        public ProductsController(IProductService service)
+        private readonly IProductService _service;
+        private readonly IMapper _mapper;
+        public ProductsController(IProductService service, IMapper mapper)
         {
             _service = service;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             var products = await _service.GetAll();
-            return Ok(products);
+            var dto = _mapper.Map<IEnumerable<ProductResponseDto>>(products);
+            return Ok(dto);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             var product = await _service.GetById(id);
+            var dto = _mapper.Map<IEnumerable<ProductResponseDto>>(product);
             if (product == null)
             {
                 return NotFound();
             }
-            return Ok(product);
+            return Ok(dto);
         }
 
         [HttpPost]
