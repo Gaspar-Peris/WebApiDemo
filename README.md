@@ -45,7 +45,7 @@ Sigue estos pasos para poner en marcha el proyecto:
     dotnet run
     ```
 
-La API estará disponible en `https://localhost:5001` (o el puerto configurado en `launchSettings.json`).
+La API estará disponible en `` (o el puerto configurado en `launchSettings.json`).
 Luego de iniciar WebApiDemo debera cambiar de proyecto y iniciar WinFormsApp1
 
 ---
@@ -53,7 +53,7 @@ Luego de iniciar WebApiDemo debera cambiar de proyecto y iniciar WinFormsApp1
 ## 📖 Documentación de Endpoints
 
 Para explorar y probar los endpoints de forma interactiva, accede a:
-👉 `https://localhost:5001/swagger`
+👉 ``
 
 | Método | Endpoint | Descripción |
 | :--- | :--- | :--- |
