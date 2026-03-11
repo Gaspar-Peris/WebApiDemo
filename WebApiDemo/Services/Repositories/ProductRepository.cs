@@ -1,6 +1,6 @@
-﻿using Models;
-using WebApiDemo.Data;
+﻿using WebApiDemo.Data;
 using Microsoft.EntityFrameworkCore;
+using DataAccess.Models;
 
 
 namespace Services.Repositories

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Models;
+using DataAccess.Models;
 using Shared;
 
 namespace WebApiDemo.Mapping

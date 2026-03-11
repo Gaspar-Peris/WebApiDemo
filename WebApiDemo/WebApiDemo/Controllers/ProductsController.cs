@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using DataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
-using Models;
 using Services.Service;
 using Shared;
 
@@ -31,11 +31,15 @@ namespace WebApiDemo.Controllers
         public async Task<IActionResult> Get(int id)
         {
             var product = await _service.GetById(id);
-            var dto = _mapper.Map<IEnumerable<ProductResponseDto>>(product);
+
             if (product == null)
             {
                 return NotFound();
             }
+
+            
+            var dto = _mapper.Map<ProductResponseDto>(product);
+
             return Ok(dto);
         }
 

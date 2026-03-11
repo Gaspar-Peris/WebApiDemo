@@ -19,60 +19,51 @@ namespace WinFormsApp1
         {
             if (Id != null)
             {
-                await CargarDatos(); 
+                await CargarDatos();
             }
         }
 
         private async void button1_Click(object sender, EventArgs e)
         {
-            if (this.Id == null)
+            // Validamos que el precio sea un número válido
+            if (!decimal.TryParse(txtPrice.Text, out decimal price))
             {
-                using (var client = new HttpClient())
-                {
-                    var endpoint = new Uri("https://localhost:7164/api/Products");
-                    var datos = new
-                    {
-                        Name = txtName.Text,
-                        Description = txtDescription.Text,
-                        Price = decimal.Parse(txtPrice.Text)
-                    };
-
-                    string json = JsonConvert.SerializeObject(datos);
-
-                    var contenido = new StringContent(json, Encoding.UTF8, "application/json");
-
-                    var response = await client.PostAsync("https://localhost:7164/api/Products", contenido);
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        MessageBox.Show("¡Guardado con éxito!");
-                        this.Close();
-                    }
-                }
+                MessageBox.Show("Precio inválido.");
+                return;
             }
-            if (Id != null)
+
+            var datos = new
             {
-                using (var client = new HttpClient())
+                Name = txtName.Text,
+                Description = txtDescription.Text,
+                Price = price
+            };
+
+            using (var client = new HttpClient())
+            {
+                string json = JsonConvert.SerializeObject(datos);
+                var contenido = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage response;
+
+                if (this.Id == null)
                 {
-                    var endpoint = new Uri("https://localhost:7164/api/Products");
-                    var datos = new
-                    {
-                        Name = txtName.Text,
-                        Description = txtDescription.Text,
-                        Price = decimal.Parse(txtPrice.Text)
-                    };
+                    
+                    response = await client.PostAsync("https://localhost:7164/api/Products", contenido);
+                }
+                else
+                {
+                    
+                    response = await client.PutAsync($"https://localhost:7164/api/Products/{this.Id}", contenido);
+                }
 
-                    string json = JsonConvert.SerializeObject(datos);
-
-                    var contenido = new StringContent(json, Encoding.UTF8, "application/json");
-
-                    var response = await client.PutAsync($"https://localhost:7164/api/Products/{this.Id}", contenido);
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        MessageBox.Show("¡Guardado con éxito!");
-                        this.Close();
-                    }
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("¡Operación realizada con éxito!");
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Error al guardar los datos.");
                 }
             }
         }
@@ -80,16 +71,21 @@ namespace WinFormsApp1
         {
             using (var client = new HttpClient())
             {
-                
+
                 var response = await client.GetStringAsync($"https://localhost:7164/api/Products/{this.Id}");
                 var prod = JsonConvert.DeserializeObject<dynamic>(response);
 
-                
+
                 txtName.Text = prod?.name;
                 txtDescription.Text = prod?.description;
                 txtPrice.Text = prod?.price.ToString();
-                
+
             }
+        }
+
+        private void txtName_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

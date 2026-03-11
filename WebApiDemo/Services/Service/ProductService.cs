@@ -1,5 +1,4 @@
-﻿using Models;
-using Services.Repositories;
+﻿using DataAccess.Models;
 using Services.UnitOfWork.Services.Repositories;
 
 

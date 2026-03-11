@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using Shared;
 using System.Security.Policy;
+using WinFormsApp1.Presentation;
 
 namespace WinFormsApp1
 {
@@ -49,7 +50,8 @@ namespace WinFormsApp1
         {
             try
             {
-                return int.Parse(dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[0].Value.ToString());
+                var valor = dataGridView1.CurrentRow.Cells["Id"].Value;
+                return int.Parse(valor.ToString());
             }
             catch
             {
@@ -60,14 +62,20 @@ namespace WinFormsApp1
 
         private void button2_Click(object sender, EventArgs e)
         {
-            int? id = GetId();
+            int? id = GetId(); 
             if (id != null)
             {
-                WinFormsApp1.FrmTabla frmTabla = new WinFormsApp1.FrmTabla();
-                frmTabla.Id = id;
+                
+                WinFormsApp1.FrmTabla frmTabla = new WinFormsApp1.FrmTabla(id);
                 frmTabla.ShowDialog();
+
+                
+                CargarLista();
             }
-            CargarLista();
+            else
+            {
+                MessageBox.Show("Por favor, seleccione un producto de la lista.");
+            }
         }
 
         private async void button3_Click(object sender, EventArgs e)
@@ -75,16 +83,32 @@ namespace WinFormsApp1
             int? IdSeleccionado = GetId();
             if (IdSeleccionado != null)
             {
-                using (var client = new HttpClient())
+                
+                var confirmacion = MessageBox.Show("¿Está seguro de eliminar este producto?", "Confirmar", MessageBoxButtons.YesNo);
+
+                if (confirmacion == DialogResult.Yes)
                 {
-                    var response = await client.DeleteAsync($"https://localhost:7164/api/Products/{IdSeleccionado}");
-                    if (response.IsSuccessStatusCode)
+                    using (var client = new HttpClient())
                     {
-                        MessageBox.Show("Eliminado con éxito");
-                        CargarLista();
+                        var response = await client.DeleteAsync($"https://localhost:7164/api/Products/{IdSeleccionado}");
+                        if (response.IsSuccessStatusCode)
+                        {
+                            MessageBox.Show("Producto eliminado con éxito");
+                            CargarLista();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Error al eliminar el producto.");
+                        }
                     }
                 }
             }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            EditRole role= new EditRole();
+            role.ShowDialog();
         }
     }
 }
