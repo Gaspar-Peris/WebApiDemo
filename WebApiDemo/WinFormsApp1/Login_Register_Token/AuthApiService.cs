@@ -1,25 +1,25 @@
 ﻿using DataAccess.Models;
 using Shared;
 using System.Net.Http.Json;
-
+using System.Net.Http.Headers; 
 
 namespace WinFormsApp1.Login_Register_Token
 {
     public class AuthApiService
     {
-        private readonly HttpClient _httpClient;
+        private static readonly HttpClient _httpClient = new HttpClient
+        {
+            BaseAddress = new Uri("https://localhost:7164/")
+        };
+        private static string? _jwtToken;
 
         public AuthApiService()
         {
-            _httpClient = new HttpClient
-            {
-                BaseAddress = new Uri("https://localhost:7164/")
-            };
         }
 
         public async Task<AuthResults?> LoginAsync(string email, string password)
         {
-            var response = await _httpClient.PostAsJsonAsync("https://localhost:7164/api/account/login", new LoginRequest
+            var response = await _httpClient.PostAsJsonAsync("api/account/login", new LoginRequest
             {
                 Email = email,
                 Password = password
@@ -28,36 +28,47 @@ namespace WinFormsApp1.Login_Register_Token
             if (!response.IsSuccessStatusCode)
                 return null;
 
-            return await response.Content.ReadFromJsonAsync<AuthResults>();
+            var authResults = await response.Content.ReadFromJsonAsync<AuthResults>();
+
+            if (authResults != null && !string.IsNullOrEmpty(authResults.AccessToken))
+            {
+                _jwtToken = authResults.AccessToken;
+                _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _jwtToken);
+            }
+
+            return authResults;
         }
 
         public async Task<bool> RegisterAsync(string FirstName, string LastName, string email, string password)
         {   
-            var response = await _httpClient.PostAsJsonAsync("https://localhost:7164/api/account/register", new RegisterRequest
+            var response = await _httpClient.PostAsJsonAsync("api/account/register", new RegisterRequest
             {
                 FirstName = FirstName,
                 LastName = LastName,
                 Email = email,
                 Password = password,
-                Role = Role.Employee
+                Role = Role.Employee 
             });
 
             return response.IsSuccessStatusCode;
         }
+
         public async Task<bool> UpdateRoleAsync(UpdateUserRoleDto updateDto)
         {
             
-            var response = await _httpClient.PatchAsJsonAsync("api/user/role", updateDto);
+            var response = await _httpClient.PutAsJsonAsync("api/users/role", updateDto);
             return response.IsSuccessStatusCode;
         }
+
         public async Task<List<User>> GetAllUsersAsync()
         {
+            
             var response = await _httpClient.GetAsync("api/users");
 
             if (!response.IsSuccessStatusCode)
                 return new List<User>();
 
-            return await response.Content.ReadFromJsonAsync<List<User>>();
+            return await response.Content.ReadFromJsonAsync<List<User>>() ?? new List<User>();
         }
     }
 }

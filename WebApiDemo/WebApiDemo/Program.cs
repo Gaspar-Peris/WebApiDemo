@@ -1,17 +1,22 @@
+using DataAccess.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Shared;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 using Services.Repositories;
 using Services.Service;
 using Services.UnitOfWork;
 using Services.UnitOfWork.Services.Repositories;
-using WebApiDemo.Authen;
+using System.Security.Claims;
+using System.Text;
 using WebApiDemo.Authen.Account;
 using WebApiDemo.Authen.Exceptions;
 using WebApiDemo.Authen.Token;
 using WebApiDemo.Data;
-using DataAccess.Models;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -22,22 +27,64 @@ builder.Services.AddIdentity<User, IdentityRole<Guid>>(opt =>
 {
     opt.Password.RequireDigit = true;
     opt.Password.RequireLowercase = true;
-    opt.Password.RequireNonAlphanumeric = true;                                     
+    opt.Password.RequireNonAlphanumeric = true;
     opt.Password.RequireUppercase = true;
     opt.Password.RequiredLength = 8;
     opt.User.RequireUniqueEmail = true;
 }).AddEntityFrameworkStores<AplicationDbContext>();
 
+var jwtOptions = builder.Configuration.GetSection("JwtOptions").Get<JwtOptions>();
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtOptions.Issuer,
+        ValidAudience = jwtOptions.Audience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Secret)),
+
+        RoleClaimType = ClaimTypes.Role
+    };
+});
+
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApiDemo", Version = "v1" });
+
+    // 1. Definimos el esquema (SIN la propiedad Reference acá adentro)
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Pegá el token así: Bearer {tu_token}"
+    });
+
+
+    c.AddSecurityRequirement(document => new OpenApiSecurityRequirement { [new OpenApiSecuritySchemeReference("bearer", document)] = [] });
+});
+
+
+
 builder.Services.AddScoped<IAuthTokenProcessor, AuthTokenProcessor>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 
 builder.Services.AddControllers();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -72,12 +119,6 @@ app.UseExceptionHandler(errorApp =>
             });
             return;
         }
-
-        //context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-        //await context.Response.WriteAsJsonAsync(new
-        //{
-          //  error = "An unexpected error occurred"
-        //});
     });
 });
 app.UseHttpsRedirection();
@@ -88,7 +129,7 @@ app.MapControllers();
 app.MapPost("/api/account/login", async (Shared.LoginRequest loginRequest, IAccountService accountService) =>
 {
     var result = await accountService.LoginAsync(loginRequest);
-    return Results.Ok(result); 
+    return Results.Ok(result);
 });
 
 app.MapPost("/api/account/register", async (Shared.RegisterRequest registerRequest, IAccountService accountService) =>
