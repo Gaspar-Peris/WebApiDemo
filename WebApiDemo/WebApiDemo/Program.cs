@@ -31,9 +31,11 @@ builder.Services.AddIdentity<User, IdentityRole<Guid>>(opt =>
     opt.Password.RequireUppercase = true;
     opt.Password.RequiredLength = 8;
     opt.User.RequireUniqueEmail = true;
-}).AddEntityFrameworkStores<AplicationDbContext>();
+}).AddEntityFrameworkStores<AplicationDbContext>()
+.AddDefaultTokenProviders();
 
-var jwtOptions = builder.Configuration.GetSection("JwtOptions").Get<JwtOptions>();
+var jwtOptions = builder.Configuration.GetSection("JwtOptions").Get<JwtOptions>()
+    ?? throw new InvalidOperationException("JwtOptions is not configured. Please review appsetings.json");
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
 
 builder.Services.AddAuthentication(options =>
@@ -74,7 +76,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 
 
-    c.AddSecurityRequirement(document => new OpenApiSecurityRequirement { [new OpenApiSecuritySchemeReference("bearer", document)] = [] });
+    c.AddSecurityRequirement(document => new OpenApiSecurityRequirement { [new OpenApiSecuritySchemeReference("Bearer", document)] = [] });
 });
 
 

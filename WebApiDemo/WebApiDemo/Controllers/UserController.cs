@@ -23,6 +23,16 @@ namespace WebApiDemo.Controllers
 
             return Ok("Role updated");
         }
+
+        [Authorize]
+        [HttpGet("GetAny")]
+        public async Task<IActionResult> GetAny(string algo)
+        {
+            
+
+            return Ok($"{algo} mas autorizado");
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
