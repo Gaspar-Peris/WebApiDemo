@@ -22,9 +22,33 @@ Este proyecto es una demostración de una API web construida con **ASP.NET Core*
 * **Lenguaje:** C#
 * **Framework:** .NET 10.0 
 * **Herramientas:** Entity Framework Core, SQL Server, OpenAPI.
+* **AutoMapper:** Para la conversión automática entre Entidades y DTOs, manteniendo el código limpio y evitando asignaciones manuales repetitivas
+* **Fluent Validation / Data Annotations:** Validación de datos en los modelos de entrada
+* **JWT (JSON Web Tokens):** Sistema de seguridad para proteger los endpoints de la API.
 
 ---
+## Manejo Global de Excepciones
 
+Una de las características clave es el Middleware de Excepciones Global. En lugar de usar bloques try-catch en cada controlador, el sistema utiliza un GlobalExceptionHandler:
+
+* **Centralización:** Todos los errores de la aplicación son capturados en un solo lugar.
+
+* **Abstracción de Errores:** Se transforman excepciones internas (como LoginFailedException o UserAlreadyExistsException) en respuestas HTTP semánticas (401 Unauthorized, 409 Conflict).
+
+* **Seguridad:** El cliente recibe un mensaje amigable y estructurado, mientras que los detalles técnicos del error se guardan en los logs del servidor para depuración.
+
+---
+## Gestión de Roles y Permisos
+El sistema implementa un control de acceso basado en roles:
+
+* **Admin:** Tiene acceso total para crear, editar y eliminar productos, además de gestionar los roles de otros usuarios.
+
+* **Director/Employee:** Tiene acceso total para crear, editar y eliminar productos, pero no puede gestionar los roles de otros usuarios.
+
+
+
+La sesión del usuario se mantiene de forma segura mediante una clase estática UserSession en el cliente, sincronizada con los claims del token JWT emitido por la API.
+---
 ## 🚀 Instalación y Uso
 
 Sigue estos pasos para poner en marcha el proyecto:
@@ -49,10 +73,7 @@ La API estará disponible en `https://localhost:5001` (o el puerto configurado e
 Luego de iniciar WebApiDemo debera cambiar de proyecto y iniciar WinFormsApp1
 
 ---
-## 📖 Base de datos
-Code First
-dotnet ef migrations add NAME_MIGRATION -p DataAccess -s WebApiDemo
-dotnet ef database update -p DataAccess -s WebApiDemo
+
 ## 📖 Documentación de Endpoints
 
 Para explorar y probar los endpoints de forma interactiva, accede a:
@@ -75,8 +96,6 @@ Para explorar y probar los endpoints de forma interactiva, accede a:
 * **Data:** Configuración de persistencia (si aplica).
 
 ---
-## Password User
-Aa1234567.
 
 ## 👤 Autor
 

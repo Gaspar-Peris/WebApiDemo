@@ -36,20 +36,24 @@ namespace WebApiDemo.Data
                 {
                     Id = IdentityRoleConstants.AdminRoleGuid,
                     Name = IdentityRoleConstants.Admin,
-                    NormalizedName = IdentityRoleConstants.Admin.ToUpper()
+                    NormalizedName = IdentityRoleConstants.Admin.ToUpper(),
+                    ConcurrencyStamp = "9d1d6d3d-8c2f-4f5d-a111-111111111111"
+
 
                 },
                 new IdentityRole<Guid>
                 {
                     Id = IdentityRoleConstants.DirectorGuid,
                     Name = IdentityRoleConstants.Director,
-                    NormalizedName = IdentityRoleConstants.Director.ToUpper()
+                    NormalizedName = IdentityRoleConstants.Director.ToUpper(),
+                    ConcurrencyStamp = "9d1d6d3d-8c2f-4f5d-a222-222222222222"
                 },
                 new IdentityRole<Guid>
                 {
                     Id = IdentityRoleConstants.RegularEmployeeGuid,
                     Name = IdentityRoleConstants.Employee,
-                    NormalizedName = IdentityRoleConstants.Employee.ToUpper()
+                    NormalizedName = IdentityRoleConstants.Employee.ToUpper(),
+                    ConcurrencyStamp = "9d1d6d3d-8c2f-4f5d-a333-333333333333"
                 }
             });
         }
