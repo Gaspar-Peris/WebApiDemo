@@ -8,11 +8,8 @@ namespace DataAccess.Models
         public required string LastName { get; set; }
         public string? RefreshToken { get; set; }
         public DateTime? RefreshTokenExpireAtUtc {  get; set; }
-        public required Role Role { get; set; }
 
-
-
-        public static User Create(string email, string firstName, string lastName, Role Role)
+        public static User Create(string email, string firstName, string lastName)
         {
             return new User
             {
@@ -20,7 +17,6 @@ namespace DataAccess.Models
                 UserName = email,
                 FirstName = firstName,
                 LastName = lastName,
-                Role = Role
             };
         }
         public override string ToString()

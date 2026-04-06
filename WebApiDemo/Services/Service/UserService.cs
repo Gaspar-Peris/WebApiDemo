@@ -14,11 +14,6 @@ namespace Services.Service
         {
             _userRepository = userRepository;
         }
-
-        public async Task UpdateUserRoleAsync(Guid userId, Role role)
-        {
-            await _userRepository.UpdateUserRoleAsync(userId, role);
-        }
         public async Task<List<User>> GetAllAsync()
         {
             return await _userRepository.GetAllAsync();

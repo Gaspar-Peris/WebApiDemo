@@ -1,7 +1,8 @@
 ﻿using DataAccess.Models;
 using Shared;
-using System.Net.Http.Json;
+using Shared.Dto;
 using System.Net.Http.Headers; 
+using System.Net.Http.Json;
 
 namespace WinFormsApp1.Login_Register_Token
 {
@@ -56,19 +57,19 @@ namespace WinFormsApp1.Login_Register_Token
         public async Task<bool> UpdateRoleAsync(UpdateUserRoleDto updateDto)
         {
             
-            var response = await _httpClient.PutAsJsonAsync("api/users/role", updateDto);
+            var response = await _httpClient.PutAsJsonAsync("api/user/role", updateDto);
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<List<User>> GetAllUsersAsync()
+        public async Task<List<UserResponseDto>> GetAllUsersAsync()
         {
-            
-            var response = await _httpClient.GetAsync("api/users");
+            var response = await _httpClient.GetAsync("api/user");
 
             if (!response.IsSuccessStatusCode)
-                return new List<User>();
 
-            return await response.Content.ReadFromJsonAsync<List<User>>() ?? new List<User>();
+                return new List<UserResponseDto>();
+
+            return await response.Content.ReadFromJsonAsync<List<UserResponseDto>>() ?? new List<UserResponseDto>();
         }
     }
 }

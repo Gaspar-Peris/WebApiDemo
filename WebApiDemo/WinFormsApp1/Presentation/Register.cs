@@ -33,5 +33,10 @@ namespace WinFormsApp1.Presentation
         {
 
         }
+
+        private void Register_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -1,7 +1,8 @@
-﻿using Microsoft.Graph.Models;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using Shared;
+using Shared.Dto;
+using System.Net.Http.Json;
 using System.Text;
-
 
 namespace WinFormsApp1
 {
@@ -17,15 +18,32 @@ namespace WinFormsApp1
 
         private async void FrmTabla_Load(object sender, EventArgs e)
         {
-            if (Id != null)
+            using (HttpClient client = new HttpClient())
             {
-                await CargarDatos();
+                var listaCategorias = await client.GetFromJsonAsync<List<CategoryResponseDto>>("https://localhost:7164/api/Category");
+
+                comboCategory.DisplayMember = "Name";       // Lo que ve el usuario
+                comboCategory.ValueMember = "IdCategory";
+                comboCategory.DataSource = listaCategorias;
+
+                if (this.Id != null && this.Id > 0)
+                {
+                    var producto = await client.GetFromJsonAsync<ProductResponseDto>($"https://localhost:7164/api/Products/{this.Id}");
+
+                    if (producto != null)
+                    {
+                        txtName.Text = producto.Name;
+                        txtDescription.Text = producto.Description;
+                        txtPrice.Text = producto.Price.ToString();
+                        comboCategory.SelectedValue = producto.IdCategory;
+                    }
+                }
             }
         }
 
         private async void button1_Click(object sender, EventArgs e)
         {
-            // Validamos que el precio sea un número válido
+            
             if (!decimal.TryParse(txtPrice.Text, out decimal price))
             {
                 MessageBox.Show("Precio inválido.");
@@ -34,9 +52,11 @@ namespace WinFormsApp1
 
             var datos = new
             {
+                Id = this.Id ?? 0,
                 Name = txtName.Text,
                 Description = txtDescription.Text,
-                Price = price
+                Price = price,
+                IdCategory = comboCategory.SelectedValue,
             };
 
             using (var client = new HttpClient())
@@ -47,12 +67,11 @@ namespace WinFormsApp1
 
                 if (this.Id == null)
                 {
-                    
+
                     response = await client.PostAsync("https://localhost:7164/api/Products", contenido);
                 }
                 else
                 {
-                    
                     response = await client.PutAsync($"https://localhost:7164/api/Products/{this.Id}", contenido);
                 }
 
@@ -63,27 +82,17 @@ namespace WinFormsApp1
                 }
                 else
                 {
-                    MessageBox.Show("Error al guardar los datos.");
+                    var error = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show($"Error: {response.StatusCode}. Detalle: {error}");
                 }
             }
         }
-        private async Task CargarDatos()
+        private void txtName_TextChanged(object sender, EventArgs e)
         {
-            using (var client = new HttpClient())
-            {
 
-                var response = await client.GetStringAsync($"https://localhost:7164/api/Products/{this.Id}");
-                var prod = JsonConvert.DeserializeObject<dynamic>(response);
-
-
-                txtName.Text = prod?.name;
-                txtDescription.Text = prod?.description;
-                txtPrice.Text = prod?.price.ToString();
-
-            }
         }
 
-        private void txtName_TextChanged(object sender, EventArgs e)
+        private void comboCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

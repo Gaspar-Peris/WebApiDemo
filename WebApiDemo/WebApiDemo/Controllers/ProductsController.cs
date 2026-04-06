@@ -44,21 +44,20 @@ namespace WebApiDemo.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(Product product)
+        public async Task<IActionResult> Post(ProductRequestDto productRequestDto)
         {
+            var product = _mapper.Map<Product>(productRequestDto);
+
             await _service.Create(product);
             return Ok(); 
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Product product)
+        public async Task<IActionResult> Put(int id, [FromBody] ProductRequestDto productRequestDto)
         {
+            var product = _mapper.Map<Product>(productRequestDto);
+            product.Id = id;
             var result = await _service.Update(id, product);
-
-            if (!result)
-            {
-                return NotFound();
-            }
             return Ok();
         }
 

@@ -1,4 +1,6 @@
-﻿using Shared;
+﻿
+using DataAccess.Models;
+using Shared;
 
 namespace WebApiDemo.Authen.Account
 {
@@ -7,7 +9,6 @@ namespace WebApiDemo.Authen.Account
         Task RegisterAsync(RegisterRequest registerRequest);
         Task<AuthResults> LoginAsync(LoginRequest loginRequest);
         Task<AuthResults> RefreshTokenAsync(string? refreshToken);
-
-
+        Task UpdateUserRoleAsync(Guid userId, Role nuevoRol);
     }
 }

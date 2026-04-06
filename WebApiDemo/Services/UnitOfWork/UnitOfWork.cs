@@ -11,11 +11,13 @@ namespace Services.UnitOfWork
     {
         private readonly AplicationDbContext _context;
         public IProductRepository Products { get; }
+        public ICategoryRepository Categories { get; }
 
-        public UnitOfWork(AplicationDbContext context, IProductRepository productRepository)
+        public UnitOfWork(AplicationDbContext context, IProductRepository productRepository, ICategoryRepository categories)
         {
             _context = context;
             Products = productRepository;
+            Categories = categories;
         }
 
         public async Task<int> CompleteAsync()

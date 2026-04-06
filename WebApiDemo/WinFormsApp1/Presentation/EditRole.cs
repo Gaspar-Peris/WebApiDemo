@@ -1,14 +1,5 @@
 ﻿using DataAccess.Models;
-using Newtonsoft.Json;
 using Shared;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using System.Xml.Linq;
 using WinFormsApp1.Login_Register_Token;
 
 namespace WinFormsApp1.Presentation
@@ -53,13 +44,12 @@ namespace WinFormsApp1.Presentation
         {
             var usuarios = await authApiService.GetAllUsersAsync();
 
-            cmbUsuarios.DataSource = usuarios;
-
-           
-            cmbUsuarios.DisplayMember = "Email";
-
-            
-            cmbUsuarios.ValueMember = "Id";
+            if (usuarios != null && usuarios.Count > 0)
+            {
+                cmbUsuarios.DisplayMember = "Email";
+                cmbUsuarios.ValueMember = "Id";
+                cmbUsuarios.DataSource = usuarios;
+            }
 
             cmbRoles.DataSource = Enum.GetValues(typeof(Role));
         }
@@ -69,10 +59,7 @@ namespace WinFormsApp1.Presentation
         }
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbUsuarios.SelectedItem is User selectedUser)
-            {
-                cmbRoles.SelectedItem = selectedUser.Role;
-            }
+            
         }
     }
 }

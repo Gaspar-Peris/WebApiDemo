@@ -7,7 +7,7 @@ namespace Services.Service
 {
     public interface IUserService
     {
-        Task UpdateUserRoleAsync(Guid userId, Role role);
+        
 
         Task<List<User>> GetAllAsync();
     }

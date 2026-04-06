@@ -2,7 +2,6 @@ using DataAccess.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using Services.Repositories;
@@ -15,6 +14,7 @@ using WebApiDemo.Authen.Account;
 using WebApiDemo.Authen.Exceptions;
 using WebApiDemo.Authen.Token;
 using WebApiDemo.Data;
+using WebApiDemo.Mapping;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -64,7 +64,6 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApiDemo", Version = "v1" });
 
-    // 1. Definimos el esquema (SIN la propiedad Reference acá adentro)
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -86,13 +85,17 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 
 builder.Services.AddControllers();
 
-
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddProfile<MappinProfile>();
+});
 
 var app = builder.Build();
 
@@ -127,23 +130,5 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-
-app.MapPost("/api/account/login", async (Shared.LoginRequest loginRequest, IAccountService accountService) =>
-{
-    var result = await accountService.LoginAsync(loginRequest);
-    return Results.Ok(result);
-});
-
-app.MapPost("/api/account/register", async (Shared.RegisterRequest registerRequest, IAccountService accountService) =>
-{
-    await accountService.RegisterAsync(registerRequest);
-    return Results.Ok();
-});
-
-app.MapPost("/api/account/refresh", async (string refreshToken, IAccountService accountService) =>
-{
-    var result = await accountService.RefreshTokenAsync(refreshToken);
-    return Results.Ok(result);
-});
 
 app.Run();

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using DataAccess.Models;
+using Microsoft.AspNetCore.Identity;
 using Shared;
 using System.Net.Http.Json;
 using WinFormsApp1.Login_Register_Token;
@@ -22,16 +23,25 @@ namespace WinFormsApp1
 
             if (result != null)
             {
-                MessageBox.Show("Login correcto");
+                MessageBox.Show("El rol es: " + result.Role);
+                if (Enum.TryParse<Role>(result.Role, true, out Role rolReal))
+                {
+                    UserSession.CurrentRole = rolReal;
+                }
 
-                var mainForm = new Form1();
-                mainForm.FormClosed += (s, args) => Application.Exit();
-                mainForm.Show();
-                this.Hide();
-            }
-            else
-            {
-                MessageBox.Show("Credenciales incorrectas");
+                if (result != null)
+                {
+                    MessageBox.Show("Login correcto");
+
+                    var mainForm = new Form1();
+                    mainForm.FormClosed += (s, args) => Application.Exit();
+                    mainForm.Show();
+                    this.Hide();
+                }
+                else
+                {
+                    MessageBox.Show("Credenciales incorrectas");
+                }
             }
         }
 
@@ -43,6 +53,11 @@ namespace WinFormsApp1
         }
 
         private void Login_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label6_Click(object sender, EventArgs e)
         {
 
         }

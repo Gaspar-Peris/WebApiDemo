@@ -1,4 +1,4 @@
-﻿using DataAccess.Models; // Tus modelos (User, Role)
+﻿using DataAccess.Models; 
 using Microsoft.AspNetCore.Identity;
 using Services.Repositories;
 using Shared;
@@ -27,8 +27,7 @@ namespace WebApiDemo.Authen.Account
             {
                 throw new UserAlreadyExistsException(registerRequest.Email);
             }
-
-            var user = User.Create(registerRequest.Email, registerRequest.FirstName, registerRequest.LastName, registerRequest.Role);
+            var user = User.Create(registerRequest.Email, registerRequest.FirstName, registerRequest.LastName);
 
             var result = await _userManager.CreateAsync(user, registerRequest.Password);
 
@@ -38,12 +37,11 @@ namespace WebApiDemo.Authen.Account
                 throw new Exception($"La contraseña no cumple los requisitos: {errorMessages}");
             }
 
-            
             string roleName = registerRequest.Role switch
             {
-                Role.Admin => "Admin", 
-                Role.Director => "Director",
-                _ => "Employee"
+                Role.Admin => IdentityRoleConstants.Admin,
+                Role.Director => IdentityRoleConstants.Director,
+                _ => IdentityRoleConstants.Employee
             };
 
             await _userManager.AddToRoleAsync(user, roleName);
@@ -65,7 +63,8 @@ namespace WebApiDemo.Authen.Account
             {
                 AccessToken = jwtToken,
                 RefreshToken = user.RefreshToken,
-                ExpiresAt = expirationDateInUtc
+                ExpiresAt = expirationDateInUtc,
+                Role = roles.FirstOrDefault() ?? "Employee"
             };
         }
 
@@ -106,6 +105,29 @@ namespace WebApiDemo.Authen.Account
                 RefreshToken = refreshTokenValue,
                 ExpiresAt = expirationDateInUtc,
             };
+        }
+
+        public async Task UpdateUserRoleAsync(Guid userId, Role nuevoRol)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null) throw new Exception("Usuario no encontrado");
+
+            var rolesActuales = await _userManager.GetRolesAsync(user);
+            await _userManager.RemoveFromRolesAsync(user, rolesActuales);
+
+            string roleName = nuevoRol switch
+            {
+                Role.Admin => IdentityRoleConstants.Admin,
+                Role.Director => IdentityRoleConstants.Director,
+                _ => IdentityRoleConstants.Employee
+            };
+
+            var result = await _userManager.AddToRoleAsync(user, roleName);
+
+            if (!result.Succeeded)
+            {
+                throw new Exception("Error al actualizar el rol");
+            }
         }
     }
 }

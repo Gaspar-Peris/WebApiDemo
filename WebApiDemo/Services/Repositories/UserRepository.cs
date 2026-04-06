@@ -19,18 +19,6 @@ namespace Services.Repositories
             return user;
         }
 
-        public async Task UpdateUserRoleAsync(Guid userId, Role role)
-        {
-            var user = await _AplicationDbContext.Users
-                .FirstOrDefaultAsync(x => x.Id == userId);
-
-            if (user != null)
-            {
-                user.Role = role;
-
-                await _AplicationDbContext.SaveChangesAsync();
-            }
-        }
         public async Task<List<User>> GetAllAsync()
         {
             return await _AplicationDbContext.Users.ToListAsync();

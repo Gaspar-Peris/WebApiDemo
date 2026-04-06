@@ -36,6 +36,8 @@
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
+            label4 = new Label();
+            comboCategory = new ComboBox();
             SuspendLayout();
             // 
             // button1
@@ -59,7 +61,7 @@
             // 
             // txtName
             // 
-            txtName.Location = new Point(128, 106);
+            txtName.Location = new Point(177, 110);
             txtName.Name = "txtName";
             txtName.Size = new Size(125, 27);
             txtName.TabIndex = 2;
@@ -67,14 +69,14 @@
             // 
             // txtDescription
             // 
-            txtDescription.Location = new Point(128, 149);
+            txtDescription.Location = new Point(177, 153);
             txtDescription.Name = "txtDescription";
             txtDescription.Size = new Size(125, 27);
             txtDescription.TabIndex = 3;
             // 
             // txtPrice
             // 
-            txtPrice.Location = new Point(128, 195);
+            txtPrice.Location = new Point(177, 199);
             txtPrice.Name = "txtPrice";
             txtPrice.Size = new Size(125, 27);
             txtPrice.TabIndex = 4;
@@ -82,7 +84,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(51, 113);
+            label1.Location = new Point(100, 117);
             label1.Name = "label1";
             label1.Size = new Size(49, 20);
             label1.TabIndex = 5;
@@ -91,7 +93,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(37, 156);
+            label2.Location = new Point(86, 160);
             label2.Name = "label2";
             label2.Size = new Size(85, 20);
             label2.TabIndex = 6;
@@ -100,17 +102,37 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(51, 202);
+            label3.Location = new Point(100, 206);
             label3.Name = "label3";
             label3.Size = new Size(41, 20);
             label3.TabIndex = 7;
             label3.Text = "Price";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(86, 248);
+            label4.Name = "label4";
+            label4.Size = new Size(69, 20);
+            label4.TabIndex = 8;
+            label4.Text = "Category";
+            // 
+            // comboCategory
+            // 
+            comboCategory.FormattingEnabled = true;
+            comboCategory.Location = new Point(177, 248);
+            comboCategory.Name = "comboCategory";
+            comboCategory.Size = new Size(151, 28);
+            comboCategory.TabIndex = 9;
+            comboCategory.SelectedIndexChanged += comboCategory_SelectedIndexChanged;
             // 
             // FrmTabla
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(416, 451);
+            Controls.Add(comboCategory);
+            Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
@@ -136,5 +158,7 @@
         private Label label1;
         private Label label2;
         private Label label3;
+        private Label label4;
+        private ComboBox comboCategory;
     }
 }

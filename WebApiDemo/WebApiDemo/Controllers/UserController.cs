@@ -1,25 +1,32 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Service;
 using Shared;
+using Shared.Dto;
+using WebApiDemo.Authen.Account;
 
 namespace WebApiDemo.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IAccountService _accountService;
+        private readonly IMapper _mapper;
 
-        public UsersController(IUserService userService)
+        public UserController(IUserService userService, IAccountService accountService, IMapper mapper)
         {
             _userService = userService;
+            _accountService = accountService;
+            _mapper = mapper;
         }
         [Authorize(Roles = "Admin")]
         [HttpPut("role")]
         public async Task<IActionResult> UpdateRole(UpdateUserRoleDto dto)
         {
-            await _userService.UpdateUserRoleAsync(dto.UserId, dto.Role);
+            await _accountService.UpdateUserRoleAsync(dto.UserId, dto.Role);
 
             return Ok("Role updated");
         }
@@ -37,7 +44,9 @@ namespace WebApiDemo.Controllers
         public async Task<IActionResult> GetAll()
         {
             var users = await _userService.GetAllAsync();
-            return Ok(users);
+
+            var dto = _mapper.Map<IEnumerable<UserResponseDto>>(users);
+            return Ok(dto);
         }
     }
 }

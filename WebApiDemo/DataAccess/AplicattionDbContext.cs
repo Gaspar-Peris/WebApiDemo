@@ -11,13 +11,17 @@ namespace WebApiDemo.Data
 
         public DbSet<Product> Products { get; set; }
         public DbSet<User> User { get; set; }
-        
-
-
+        public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<Product>()
+        .HasOne(p => p.Category)
+        .WithMany(c => c.Products)
+        .HasForeignKey(p => p.IdCategory)
+        .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Product>()
                 .Property(p => p.Price)

@@ -12,6 +12,8 @@ namespace Services.UnitOfWork
         {
             IProductRepository Products { get; }
 
+            ICategoryRepository Categories { get; }
+
             Task<int> CompleteAsync();
         }
     }

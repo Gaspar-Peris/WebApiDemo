@@ -28,103 +28,126 @@
         /// </summary>
         private void InitializeComponent()
         {
-            dataGridView1 = new DataGridView();
-            button1 = new Button();
-            button2 = new Button();
-            button3 = new Button();
-            button4 = new Button();
             button5 = new Button();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            buttonCategory = new Button();
+            panelMenu = new Panel();
+            button6 = new Button();
+            panel1 = new Panel();
+            pictureBox1 = new PictureBox();
+            panelTitleBar = new Panel();
+            panelDesktop = new Panel();
+            panelMenu.SuspendLayout();
+            panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
-            // 
-            // dataGridView1
-            // 
-            dataGridView1.AllowUserToAddRows = false;
-            dataGridView1.AllowUserToDeleteRows = false;
-            dataGridView1.AllowUserToOrderColumns = true;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(12, 191);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.ReadOnly = true;
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(776, 247);
-            dataGridView1.TabIndex = 0;
-            // 
-            // button1
-            // 
-            button1.Location = new Point(533, 45);
-            button1.Name = "button1";
-            button1.Size = new Size(94, 29);
-            button1.TabIndex = 1;
-            button1.Text = "Add";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click_1;
-            // 
-            // button2
-            // 
-            button2.Location = new Point(633, 45);
-            button2.Name = "button2";
-            button2.Size = new Size(94, 29);
-            button2.TabIndex = 2;
-            button2.Text = "Edit";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
-            // 
-            // button3
-            // 
-            button3.Location = new Point(533, 80);
-            button3.Name = "button3";
-            button3.Size = new Size(94, 29);
-            button3.TabIndex = 3;
-            button3.Text = "Delete";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
-            // 
-            // button4
-            // 
-            button4.Location = new Point(341, 156);
-            button4.Name = "button4";
-            button4.Size = new Size(94, 29);
-            button4.TabIndex = 4;
-            button4.Text = "Relouding";
-            button4.UseVisualStyleBackColor = true;
-            button4.Click += button4_Click;
             // 
             // button5
             // 
-            button5.Location = new Point(633, 80);
+            button5.BackColor = SystemColors.ActiveCaption;
+            button5.Location = new Point(25, 232);
             button5.Name = "button5";
-            button5.Size = new Size(94, 29);
+            button5.Size = new Size(194, 45);
             button5.TabIndex = 5;
             button5.Text = "Role";
-            button5.UseVisualStyleBackColor = true;
+            button5.UseVisualStyleBackColor = false;
             button5.Click += button5_Click;
+            // 
+            // buttonCategory
+            // 
+            buttonCategory.BackColor = SystemColors.ActiveCaption;
+            buttonCategory.Location = new Point(25, 179);
+            buttonCategory.Name = "buttonCategory";
+            buttonCategory.Size = new Size(194, 47);
+            buttonCategory.TabIndex = 6;
+            buttonCategory.Text = "Category Magnament";
+            buttonCategory.UseVisualStyleBackColor = false;
+            buttonCategory.Click += buttonCategory_Click;
+            // 
+            // panelMenu
+            // 
+            panelMenu.BackColor = SystemColors.HotTrack;
+            panelMenu.Controls.Add(button6);
+            panelMenu.Controls.Add(panel1);
+            panelMenu.Controls.Add(buttonCategory);
+            panelMenu.Controls.Add(button5);
+            panelMenu.Dock = DockStyle.Left;
+            panelMenu.Location = new Point(0, 0);
+            panelMenu.Name = "panelMenu";
+            panelMenu.Size = new Size(250, 502);
+            panelMenu.TabIndex = 7;
+            // 
+            // button6
+            // 
+            button6.BackColor = SystemColors.ActiveCaption;
+            button6.Location = new Point(25, 126);
+            button6.Name = "button6";
+            button6.Size = new Size(194, 47);
+            button6.TabIndex = 7;
+            button6.Text = "Product Magnament";
+            button6.UseVisualStyleBackColor = false;
+            button6.Click += button6_Click;
+            // 
+            // panel1
+            // 
+            panel1.Controls.Add(pictureBox1);
+            panel1.Dock = DockStyle.Top;
+            panel1.Location = new Point(0, 0);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(250, 120);
+            panel1.TabIndex = 5;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.Image = Properties.Resources.dieta;
+            pictureBox1.Location = new Point(0, 3);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(244, 114);
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox1.TabIndex = 0;
+            pictureBox1.TabStop = false;
+            // 
+            // panelTitleBar
+            // 
+            panelTitleBar.BackColor = SystemColors.Highlight;
+            panelTitleBar.Dock = DockStyle.Top;
+            panelTitleBar.Location = new Point(250, 0);
+            panelTitleBar.Name = "panelTitleBar";
+            panelTitleBar.Size = new Size(749, 60);
+            panelTitleBar.TabIndex = 8;
+            panelTitleBar.Paint += panelTitleBar_Paint;
+            // 
+            // panelDesktop
+            // 
+            panelDesktop.Dock = DockStyle.Fill;
+            panelDesktop.Location = new Point(250, 60);
+            panelDesktop.Name = "panelDesktop";
+            panelDesktop.Size = new Size(749, 442);
+            panelDesktop.TabIndex = 9;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Controls.Add(button5);
-            Controls.Add(button4);
-            Controls.Add(button3);
-            Controls.Add(button2);
-            Controls.Add(button1);
-            Controls.Add(dataGridView1);
+            ClientSize = new Size(999, 502);
+            Controls.Add(panelDesktop);
+            Controls.Add(panelTitleBar);
+            Controls.Add(panelMenu);
             Name = "Form1";
             Text = "Recargar";
-            Load += Form1_Load;
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            panelMenu.ResumeLayout(false);
+            panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
-
-        private DataGridView dataGridView1;
-        private Button button1;
-        private Button button2;
-        private Button button3;
-        private Button button4;
         private Button button5;
+        private Button buttonCategory;
+        private Panel panelMenu;
+        private Panel panelTitleBar;
+        private Panel panelDesktop;
+        private Panel panel1;
+        private PictureBox pictureBox1;
+        private Button button6;
     }
 }

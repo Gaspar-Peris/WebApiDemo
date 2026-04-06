@@ -36,7 +36,7 @@
             // 
             // button1
             // 
-            button1.Location = new Point(115, 241);
+            button1.Location = new Point(194, 244);
             button1.Name = "button1";
             button1.Size = new Size(103, 48);
             button1.TabIndex = 0;
@@ -47,7 +47,7 @@
             // cmbRoles
             // 
             cmbRoles.FormattingEnabled = true;
-            cmbRoles.Location = new Point(176, 66);
+            cmbRoles.Location = new Point(303, 69);
             cmbRoles.Name = "cmbRoles";
             cmbRoles.Size = new Size(151, 28);
             cmbRoles.TabIndex = 1;
@@ -56,7 +56,7 @@
             // cmbUsuarios
             // 
             cmbUsuarios.FormattingEnabled = true;
-            cmbUsuarios.Location = new Point(12, 66);
+            cmbUsuarios.Location = new Point(139, 69);
             cmbUsuarios.Name = "cmbUsuarios";
             cmbUsuarios.Size = new Size(151, 28);
             cmbUsuarios.TabIndex = 2;
@@ -64,7 +64,7 @@
             // 
             // button2
             // 
-            button2.Location = new Point(224, 241);
+            button2.Location = new Point(303, 244);
             button2.Name = "button2";
             button2.Size = new Size(103, 48);
             button2.TabIndex = 3;
@@ -75,7 +75,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(339, 301);
+            ClientSize = new Size(603, 304);
             Controls.Add(button2);
             Controls.Add(cmbUsuarios);
             Controls.Add(cmbRoles);
